@@ -2,11 +2,6 @@
   "locked": false,
   "version": 2,
   "targets": {
-    "DNX,Version=v4.5.1": {
-      "System.Net.Sockets/4.1.0-beta-23516": {
-        "type": "package"
-      }
-    },
     "DNXCore,Version=v5.0": {
       "Microsoft.CSharp/4.0.1-beta-23516": {
         "type": "package",
@@ -481,22 +476,6 @@
         },
         "compile": {
           "ref/dotnet/System.Threading.Tasks.dll": {}
-        }
-      }
-    },
-    "DNX,Version=v4.5.1/osx.10.11-x86": {
-      "System.Net.Sockets/4.1.0-beta-23516": {
-        "type": "package"
-      }
-    },
-    "DNX,Version=v4.5.1/osx.10.11-x64": {
-      "System.Net.Sockets/4.1.0-beta-23516": {
-        "type": "package"
-      },
-      "runtime.osx.10.10.System.Net.Sockets/4.1.0-beta-23516": {
-        "type": "package",
-        "compile": {
-          "ref/dotnet/_._": {}
         }
       }
     },
@@ -3160,7 +3139,6 @@
     "": [
       "System.Net.Sockets >= 4.1.0-beta-23516"
     ],
-    "DNX,Version=v4.5.1": [],
     "DNXCore,Version=v5.0": [
       "Microsoft.CSharp >= 4.0.1-beta-23516",
       "System.Collections >= 4.0.11-beta-23516",

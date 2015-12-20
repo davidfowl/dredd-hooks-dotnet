@@ -1,13 +1,13 @@
 {
   "version": "1.0.0-*",
-  "description": "ConsoleApp1 Console Application",
+  "description": "dreddHooksDotnet Console Application",
   "authors": [
-    "daroth"
+    "Vincenzo Chianese"
   ],
   "tags": [
     ""
   ],
-  "projectUrl": "",
+  "projectUrl": "https://github.com/XVincentX/dredd-hooks-dotnet",
   "licenseUrl": "",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -16,10 +16,9 @@
     "System.Net.Sockets": "4.1.0-beta-23516"
   },
   "commands": {
-    "ConsoleApp1": "ConsoleApp1"
+    "dreddHooksDotnet": "dreddHooksDotnet"
   },
   "frameworks": {
-    "dnx451": {},
     "dnxcore50": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",

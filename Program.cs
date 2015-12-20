@@ -1,6 +1,4 @@
 using System;
-using System.Net;
-using System.Net.Sockets;
 
 namespace dredd_hooks_dotnet
 {
@@ -8,6 +6,7 @@ namespace dredd_hooks_dotnet
     {
         public static void Main(string[] args)
         {   
+            string something = "Nasino";
 			Console.WriteLine("Hello from DNX!");
         }
     }
