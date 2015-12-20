@@ -5,7 +5,9 @@
     "Vincenzo Chianese"
   ],
   "tags": [
-    ""
+    "dredd",
+    "dredd-hooks",
+    "dredd-hooks-dotnet"
   ],
   "projectUrl": "https://github.com/XVincentX/dredd-hooks-dotnet",
   "licenseUrl": "",
