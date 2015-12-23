@@ -15,7 +15,7 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "System.Net.Sockets": "4.1.0-beta-23516"
+    "Newtonsoft.Json": "8.0.1-beta3"
   },
   "commands": {
     "dreddHooksDotnet": "dreddHooksDotnet"
@@ -24,9 +24,8 @@
     "dnxcore50": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",
-        "System.Collections": "4.0.11-beta-23516",
+        "System.Net.Sockets": "4.1.0-beta-23516",
         "System.Console": "4.0.0-beta-23516",
-        "System.Linq": "4.0.1-beta-23516",
         "System.Threading": "4.0.11-beta-23516"
       }
     }

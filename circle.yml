@@ -1,0 +1,11 @@
+machine:
+  pre:
+    - sudo apt-get install libunwind8 libssl-dev unzip
+    - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh && source ~/.dnx/dnvm/dnvm.sh
+    - dnvm install latest -r coreclr -u
+
+  
+dependencies:
+
+  post:
+    - dnu restore
