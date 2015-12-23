@@ -1,6 +1,6 @@
 namespace dredd_hooks_dotnet
 {
-  public static class EventType 
+  public static class EventType
   {
     public static string beforeAll = "beforeAll";
     public static string beforeEach = "beforeEach";

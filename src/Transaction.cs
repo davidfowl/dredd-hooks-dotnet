@@ -1,6 +1,6 @@
 namespace dredd_hooks_dotnet
 {
-  public struct Transaction 
+  public struct Transaction
   {
     public string uuid { get; set; }
     public string Event { get; set; }

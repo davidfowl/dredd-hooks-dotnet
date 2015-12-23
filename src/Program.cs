@@ -1,5 +1,3 @@
-using System;
-
 namespace dredd_hooks_dotnet
 {
     public class Program
@@ -7,8 +5,7 @@ namespace dredd_hooks_dotnet
         public static void Main(string[] args)
         {
           Server s = new Server();
-          s.Run().Wait();   
+          s.Run().Wait();
         }
     }
 }
-
