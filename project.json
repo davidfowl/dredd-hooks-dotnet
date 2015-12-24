@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-*",
-  "description": "dreddHooksDotnet Console Application",
+  "description": "Dredd hooks for dotnet",
   "authors": [
     "Vincenzo Chianese"
   ],
@@ -18,7 +18,7 @@
     "Newtonsoft.Json": "8.0.1-beta3"
   },
   "commands": {
-    "dreddHooksDotnet": "dreddHooksDotnet"
+    "dredd-hooks-dotnet": "dredd-hooks-dotnet"
   },
   "frameworks": {
     "dnx451": {},
