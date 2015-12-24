@@ -1,7 +1,8 @@
 machine:
   pre:
-    - sudo apt-get install libunwind8 libssl-dev unzip
-    - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh
+    - sudo apt-get install clang-3.6 lldb-3.6 mono-devel
+    - sudo apt-get install dotnet
+    - mozroots --import --sync
     - source /home/ubuntu/.dnx/dnvm/dnvm.sh
     - dnvm install latest -r coreclr -u
 
