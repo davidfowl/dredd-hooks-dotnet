@@ -10,7 +10,7 @@
     "dredd-hooks-dotnet"
   ],
   "projectUrl": "https://github.com/XVincentX/dredd-hooks-dotnet",
-  "licenseUrl": "",
+  "licenseUrl": "https://opensource.org/licenses/MIT",
   "compilationOptions": {
     "emitEntryPoint": true
   },
@@ -24,6 +24,8 @@
     "dnx451": {},
     "dnxcore50": {
       "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Net.Sockets": "4.1.0-beta-23516"
       }
     }
   }
