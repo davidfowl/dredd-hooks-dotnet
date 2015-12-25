@@ -9,7 +9,7 @@ namespace dredd_hooks_dotnet
     {
         public static void Main(string[] args)
         {
-          if (args.Length == 1)
+          if (args.Length != 1)
           {
             Console.WriteLine("Hooks file name not specified.");
             return;
@@ -20,7 +20,7 @@ namespace dredd_hooks_dotnet
 #if DNXCORE50
           Console.WriteLine(
             @"Unfortunately DNXCORE50 does not support assembly loading
-            yet. The issue is tracked here: https://github.com/dotnet/coreclr/issues/2095.
+            yet. The issue is tracked here: https://github.com/dotnet/coreclr/issues/2095
             I will load the current in-project class.
             Please refer to project documentation for more informations.");
             
@@ -28,7 +28,7 @@ namespace dredd_hooks_dotnet
             // Add your handlers here.
             
 #else          
-          if (!File.Exists(args[1]))
+          if (!File.Exists(args[0]))
           {
             Console.WriteLine("Specified hook file does not exist");
             return;
@@ -38,13 +38,13 @@ namespace dredd_hooks_dotnet
           
           try
           {
-            assembly = Assembly.LoadFile(args[1]);
+            assembly = Assembly.LoadFile(args[0]);
           }
           catch
           {
             // Not a DLL, let's try with code itself.
             
-            string code = File.ReadAllText(args[1]);
+            string code = File.ReadAllText(args[0]);
             var syntaxTree = SyntaxFactory.ParseSyntaxTree(code);
             var compilation = CSharpCompilation
                 .Create("hooks.dll")
