@@ -15,8 +15,12 @@ namespace dredd_hooks_dotnet
       private const char messageSeparator = '\n';
       private byte[] buffer = new byte[readSize];
 
-      public Transaction ProcessMessage(Transaction transaction)
+      public HookTransaction ProcessMessage(HookTransaction transaction)
       {
+        switch (transaction.Event)
+        {
+        }
+        
         return transaction;
       }
 
@@ -42,7 +46,7 @@ namespace dredd_hooks_dotnet
             var split = messagePart.Split(messageSeparator);
             var message = string.Concat(stringBuffer.ToString(), split[0]);
             stringBuffer.Clear().Append(split[1]);
-            var response = ProcessMessage(JsonConvert.DeserializeObject<Transaction>(message));
+            var response = ProcessMessage(JsonConvert.DeserializeObject<HookTransaction>(message));
             var responseBytes = MessageEncoding.GetBytes(string.Concat(JsonConvert.SerializeObject(response),messageSeparator));
             await dataStream.WriteAsync(responseBytes, 0, responseBytes.Length);
           }
