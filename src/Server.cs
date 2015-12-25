@@ -24,8 +24,14 @@ namespace dredd_hooks_dotnet
         return transaction;
       }
 
-      public async Task Run()
+      public async Task Run(IHooksHandler hooksHandler)
       {
+        
+        if (hooksHandler == null)
+        {
+          throw new ArgumentNullException("hooksHandler cannot be null");  
+        }
+        
         var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), dreddServerPort);
         listener.Start();
 

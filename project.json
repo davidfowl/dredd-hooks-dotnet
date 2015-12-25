@@ -15,13 +15,21 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "Newtonsoft.Json": "8.0.1-beta3"
+    "Newtonsoft.Json": "8.0.1-beta3",
+    "Microsoft.CodeAnalysis.CSharp": "1.1.1"
   },
   "commands": {
     "dredd-hooks-dotnet": "dredd-hooks-dotnet"
   },
   "frameworks": {
-    "dnx451": {},
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Text.Encoding": "",
+        "System.Threading.Tasks": "",
+        "System.IO": ""
+      }
+    },
     "dnxcore50": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",
