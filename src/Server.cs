@@ -37,7 +37,7 @@ namespace dredd_hooks_dotnet
           throw new ArgumentNullException("hooksHandler cannot be null");  
         }
 
-        var listener = new TcpListener(IPAddress.Parse("localhost"), dreddServerPort);
+        var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), dreddServerPort);
         listener.Start();
 
         var stringBuffer = new StringBuilder(100);

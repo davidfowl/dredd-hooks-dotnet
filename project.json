@@ -9,6 +9,7 @@
     "dredd-hooks",
     "dredd-hooks-dotnet"
   ],
+  "exclude": "dredd-hooks-template/**/*.cs",
   "projectUrl": "https://github.com/XVincentX/dredd-hooks-dotnet",
   "licenseUrl": "https://opensource.org/licenses/MIT",
   "compilationOptions": {
