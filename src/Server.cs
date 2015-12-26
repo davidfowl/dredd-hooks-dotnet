@@ -60,7 +60,6 @@ namespace dredd_hooks_dotnet
               stringBuffer.Clear().Append(split[1]);
               try 
               {
-                Console.Out.WriteLine(message);
                 var deserializedMessage = JsonConvert.DeserializeObject<HookTransaction>(message);
                 var response = ProcessMessage(deserializedMessage);
                 var serializedResponse = JsonConvert.SerializeObject(response);
