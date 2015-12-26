@@ -14,6 +14,11 @@ namespace dredd_hooks_dotnet
       private const int readSize = 10;
       private const char messageSeparator = '\n';
       private byte[] buffer = new byte[readSize];
+      private readonly IHooksHandler _hooksHandler;
+      public Server(IHooksHandler hooksHandler)
+      {
+        _hooksHandler = hooksHandler;
+      }
 
       public HookTransaction ProcessMessage(HookTransaction transaction)
       {
@@ -24,15 +29,15 @@ namespace dredd_hooks_dotnet
         return transaction;
       }
 
-      public async Task Run(IHooksHandler hooksHandler)
+      public async Task Run()
       {
-        
-        if (hooksHandler == null)
+
+        if (_hooksHandler == null)
         {
           throw new ArgumentNullException("hooksHandler cannot be null");  
         }
-        
-        var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), dreddServerPort);
+
+        var listener = new TcpListener(IPAddress.Parse("localhost"), dreddServerPort);
         listener.Start();
 
         var stringBuffer = new StringBuilder(100);

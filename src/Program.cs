@@ -9,16 +9,16 @@ namespace dredd_hooks_dotnet
     {
         public static void Main(string[] args)
         {
+          
           if (args.Length != 1)
           {
-            Console.WriteLine("Hooks file name not specified.");
-            return;
+            Console.Out.WriteLine("Hooks file name not specified.");
           }
           
           IHooksHandler handler = null;
 
 #if DNXCORE50
-          Console.WriteLine(
+          Console.Out.WriteLine(
             @"Unfortunately DNXCORE50 does not support assembly loading
             yet. The issue is tracked here: https://github.com/dotnet/coreclr/issues/2095
             I will load the current in-project class.
@@ -30,8 +30,7 @@ namespace dredd_hooks_dotnet
 #else          
           if (!File.Exists(args[0]))
           {
-            Console.WriteLine("Specified hook file does not exist");
-            return;
+            Console.Out.WriteLine("Specified hook file does not exist");
           }
           
           Assembly assembly = null;
@@ -49,9 +48,7 @@ namespace dredd_hooks_dotnet
             var compilation = CSharpCompilation
                 .Create("hooks.dll")
                 .AddSyntaxTrees(syntaxTree)
-                .WithAssemblyName("hooks");
-
-            using (var stream = new MemoryStream())
+                .WithAssemblyName("hooks");using (var stream = new MemoryStream())
             {
                 var compileResult = compilation.Emit(stream);
                 assembly = Assembly.Load(stream.GetBuffer());
@@ -67,8 +64,8 @@ namespace dredd_hooks_dotnet
             handler = (IHooksHandler)Activator.CreateInstance(hookType, null);
 #endif                  
           
-          Server s = new Server();
-          s.Run(handler).Wait();
+          Server s = new Server(handler);
+          s.Run().Wait();
         }
     }
 }
