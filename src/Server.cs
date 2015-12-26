@@ -22,7 +22,7 @@ namespace dredd_hooks_dotnet
 
       public HookTransaction ProcessMessage(HookTransaction transaction)
       {
-        switch (transaction.Event)
+        switch (transaction.@event)
         {
         }
         
@@ -60,17 +60,18 @@ namespace dredd_hooks_dotnet
               stringBuffer.Clear().Append(split[1]);
               try 
               {
-                Console.Out.WriteLine("Ok I have a full message");
                 Console.Out.WriteLine(message);
                 var deserializedMessage = JsonConvert.DeserializeObject<HookTransaction>(message);
                 var response = ProcessMessage(deserializedMessage);
                 var serializedResponse = JsonConvert.SerializeObject(response);
+                Console.Out.WriteLine(string.Concat(serializedResponse, messageSeparator));
                 var responseBytes = MessageEncoding.GetBytes(string.Concat(serializedResponse, messageSeparator));
                 await dataStream.WriteAsync(responseBytes, 0, responseBytes.Length);                
               }
-              catch (JsonSerializationException) 
+              catch (JsonSerializationException e) 
               {
                 Console.Out.WriteLine("Invalid message. Skipped.");
+                Console.Out.WriteLine(e.Message);
                 continue;
               }
             }

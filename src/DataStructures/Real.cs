@@ -2,12 +2,10 @@ using System.Collections.Generic;
 
 namespace dredd_hooks_dotnet
 {
-  public struct Request
+  public struct Real 
   {
-    string body;
+    string statusCode;
     IDictionary<string, string> headers;
-    string uri;
-    string method;
+    string body;    
   }
 }
-
