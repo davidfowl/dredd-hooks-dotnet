@@ -1,13 +1,20 @@
 machine:
   pre:
-    - sudo apt-get install clang-3.6 lldb-3.6 mono-devel
-    - sudo apt-get install dotnet
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 10
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 10
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20
+    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20  
+    - git clone --depth 1 https://github.com/mono/mono
+    - cd mono && ./autogen.sh && make get-monolite-latest && make && sudo make install 
     - mozroots --import --sync
-    - source /home/ubuntu/.dnx/dnvm/dnvm.sh
-    - dnvm install latest -r coreclr -u
+    - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh 
+    - source ~/.dnx/dnvm/dnvm.sh
+    - dnvm upgrade -r coreclr
+    - dnvm upgrade -r mono
 
   
 dependencies:
 
   post:
     - dnu restore
+    - dnu build
