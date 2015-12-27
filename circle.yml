@@ -14,7 +14,7 @@ machine:
 
   
 dependencies:
-
   post:
+    - npm install -g dredd
     - dnu restore
     - dnu build
