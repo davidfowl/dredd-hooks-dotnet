@@ -39,6 +39,8 @@ namespace dredd_hooks_dotnet
 
         var listener = new TcpListener(IPAddress.Parse("127.0.0.1"), dreddServerPort);
         listener.Start();
+        
+        Console.Out.WriteLine("Starting");
 
         var stringBuffer = new StringBuilder(100);
         while (true)
@@ -63,7 +65,6 @@ namespace dredd_hooks_dotnet
                 var deserializedMessage = JsonConvert.DeserializeObject<HookTransaction>(message);
                 var response = ProcessMessage(deserializedMessage);
                 var serializedResponse = JsonConvert.SerializeObject(response);
-                Console.Out.WriteLine(string.Concat(serializedResponse, messageSeparator));
                 var responseBytes = MessageEncoding.GetBytes(string.Concat(serializedResponse, messageSeparator));
                 await dataStream.WriteAsync(responseBytes, 0, responseBytes.Length);                
               }

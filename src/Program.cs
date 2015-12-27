@@ -8,14 +8,7 @@ namespace dredd_hooks_dotnet
     public class Program
     {
         public static void Main(string[] args)
-        {
-          
-          if (args.Length != 1)
-          {
-            Console.Out.WriteLine("Hooks file name not specified.");
-            return;
-          }
-          
+        {          
           IHooksHandler handler = new HooksHandler();
 
 #if DNXCORE50
@@ -29,45 +22,48 @@ namespace dredd_hooks_dotnet
             // Add your handlers here.
             
 #else          
-          if (!File.Exists(args[0]))
+          foreach (var file in args)
           {
-            Console.Out.WriteLine("Specified hook file does not exist");
-            return;
-          }
-          
-          Assembly assembly = null;
-          
-          try
-          {
-            assembly = Assembly.LoadFile(args[0]);
-          }
-          catch
-          {
-            // Not a DLL, let's try with code itself.
-            
-            string code = File.ReadAllText(args[0]);
-            var syntaxTree = SyntaxFactory.ParseSyntaxTree(code);
-            var compilation = CSharpCompilation
-                .Create("hooks.dll")
-                .AddSyntaxTrees(syntaxTree)
-                .WithAssemblyName("hooks");
-            
-            using (var stream = new MemoryStream())
+            if (!File.Exists(file))
             {
-                var compileResult = compilation.Emit(stream);
-                assembly = Assembly.Load(stream.GetBuffer());
+              continue; // Not existing file, skipping.
             }
-                             
+            
+            Assembly assembly = null;
+            
+            try
+            {
+              assembly = Assembly.LoadFile(file);
+            }
+            catch
+            {
+              // Not a DLL, let's try with code itself.
+              
+              string code = File.ReadAllText(file);
+              var syntaxTree = SyntaxFactory.ParseSyntaxTree(code);
+              var compilation = CSharpCompilation
+                  .Create("hooks.dll")
+                  .AddSyntaxTrees(syntaxTree)
+                  .WithAssemblyName("hooks");
+              
+              using (var stream = new MemoryStream())
+              {
+                  var compileResult = compilation.Emit(stream);
+                  assembly = Assembly.Load(stream.GetBuffer());
+              }
+                              
+            }
+
+            if (assembly == null)
+            {
+              throw new Exception("Unable to find an assembly with dll and code mode.");            
+            }
+              
+              assembly.GetExportedTypes()[0] // This isn't a great way...
+                      .GetMethod("Configure", BindingFlags.Public | BindingFlags.Static)
+                      .Invoke(null, new object[] { handler });            
           }
 
-          if (assembly == null)
-          {
-            throw new Exception("Unable to find an assembly with dll and code mode.");            
-          }
-            
-            assembly.GetExportedTypes()[0] // This isn't a great way...
-                    .GetMethod("Configure", BindingFlags.Public | BindingFlags.Static)
-                    .Invoke(null, new object[] { handler });
 #endif                  
           
           Server s = new Server(handler);
