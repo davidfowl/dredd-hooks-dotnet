@@ -21,11 +21,7 @@ namespace dredd_hooks_dotnet
       }
 
       public HookTransaction ProcessMessage(HookTransaction transaction)
-      {
-        switch (transaction.@event)
-        {
-        }
-        
+      {        
         return transaction;
       }
 

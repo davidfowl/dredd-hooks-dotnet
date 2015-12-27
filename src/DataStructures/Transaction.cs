@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace dredd_hooks_dotnet
 {
   public struct Transaction 
@@ -16,5 +20,7 @@ namespace dredd_hooks_dotnet
     string fail;
     Test test;
     Results results;    
+    [JsonExtensionData]
+    IDictionary<string, object> _additionalData;
   }
 }
