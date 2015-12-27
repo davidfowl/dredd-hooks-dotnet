@@ -18,4 +18,8 @@ dependencies:
   post:
     - npm install -g dredd
     - dnu restore
-    - dnu build
+    - dnu publish
+    
+test:
+  post:
+    - bundle exec rake custom:test:suite    
