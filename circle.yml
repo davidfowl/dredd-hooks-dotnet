@@ -11,7 +11,8 @@ machine:
     - source ~/.dnx/dnvm/dnvm.sh
     - dnvm upgrade -r coreclr
     - dnvm upgrade -r mono
-
+  node:
+    version: 5.3.0
   
 dependencies:
   post:
