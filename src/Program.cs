@@ -13,9 +13,10 @@ namespace dredd_hooks_dotnet
           if (args.Length != 1)
           {
             Console.Out.WriteLine("Hooks file name not specified.");
+            return;
           }
           
-          IHooksHandler handler = null;
+          IHooksHandler handler = new HooksHandler();
 
 #if DNXCORE50
           Console.Out.WriteLine(
@@ -24,13 +25,14 @@ namespace dredd_hooks_dotnet
             I will load the current in-project class.
             Please refer to project documentation for more informations.");
             
-            handler = new HooksHandler();
+            // handler.RegisterHandlerFor()...
             // Add your handlers here.
             
 #else          
           if (!File.Exists(args[0]))
           {
             Console.Out.WriteLine("Specified hook file does not exist");
+            return;
           }
           
           Assembly assembly = null;
@@ -48,20 +50,24 @@ namespace dredd_hooks_dotnet
             var compilation = CSharpCompilation
                 .Create("hooks.dll")
                 .AddSyntaxTrees(syntaxTree)
-                .WithAssemblyName("hooks");using (var stream = new MemoryStream())
+                .WithAssemblyName("hooks");
+            
+            using (var stream = new MemoryStream())
             {
                 var compileResult = compilation.Emit(stream);
                 assembly = Assembly.Load(stream.GetBuffer());
-            }                 
+            }
+                             
           }
 
           if (assembly == null)
           {
             throw new Exception("Unable to find an assembly with dll and code mode.");            
           }
-
-            Type hookType = assembly.GetType("HooksHandler");
-            handler = (IHooksHandler)Activator.CreateInstance(hookType, null);
+            
+            assembly.GetExportedTypes()[0] // This isn't a great way...
+                    .GetMethod("Configure", BindingFlags.Public | BindingFlags.Static)
+                    .Invoke(null, new object[] { handler });
 #endif                  
           
           Server s = new Server(handler);
