@@ -1,16 +1,14 @@
 machine:
   pre:
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.6 10
-    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.6 10
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20
-    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20  
-    - git clone --depth 1 https://github.com/mono/mono
-    - cd mono && ./autogen.sh && make get-monolite-latest && make && sudo make install 
-    - mozroots --import --sync
+    - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+    - echo "deb http://download.mono-project.com/repo/debian wheezy main" > /etc/apt/sources.list.d/mono-xamarin.list
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends mono-complete  
     - curl -sSL https://raw.githubusercontent.com/aspnet/Home/dev/dnvminstall.sh | DNX_BRANCH=dev sh 
     - source ~/.dnx/dnvm/dnvm.sh
     - dnvm upgrade -r coreclr
     - dnvm upgrade -r mono
+
   node:
     version: 5.3.0
   
@@ -19,7 +17,8 @@ dependencies:
     - npm install -g dredd
     - dnu restore
     - dnu publish
+    - export PATH=$PATH:$(pwd)+"/bin/output/approot/dredd-hooks-dotnet"
     
 test:
-  post:
-    - bundle exec rake custom:test:suite    
+  override:
+    - cd dredd-hooks-test && bundle install && bundle exec cucumber
