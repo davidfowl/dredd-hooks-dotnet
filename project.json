@@ -28,7 +28,11 @@
         "System.Runtime": "",
         "System.Text.Encoding": "",
         "System.Threading.Tasks": "",
-        "System.IO": ""
+        "System.IO": "",
+        "System.Reflection": ""
+      },
+      "dependencies": {
+        "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-rc1-final"
       }
     },
     "dnxcore50": {

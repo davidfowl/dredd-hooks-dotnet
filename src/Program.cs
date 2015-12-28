@@ -1,16 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Emit;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace dredd_hooks_dotnet
 {
     public class Program
-    {
+    {        
         public static void Main(string[] args)
         {          
           IHooksHandler handler = new HooksHandler();
-
 #if DNXCORE50
           Console.Out.WriteLine(
             @"Unfortunately DNXCORE50 does not support assembly loading
@@ -26,7 +29,8 @@ namespace dredd_hooks_dotnet
           {
             if (!File.Exists(file))
             {
-              continue; // Not existing file, skipping.
+              Console.Out.WriteLine("Can't find {0}, skipping", file);
+              continue;
             }
             
             Assembly assembly = null;
@@ -37,18 +41,32 @@ namespace dredd_hooks_dotnet
             }
             catch
             {
+              Console.Out.WriteLine(Microsoft.Extensions.CompilationAbstractions.Default.LibraryExporter);
               // Not a DLL, let's try with code itself.
-              
               string code = File.ReadAllText(file);
+                    
               var syntaxTree = SyntaxFactory.ParseSyntaxTree(code);
-              var compilation = CSharpCompilation
-                  .Create("hooks.dll")
-                  .AddSyntaxTrees(syntaxTree)
-                  .WithAssemblyName("hooks");
+              var compilation = CSharpCompilation.Create(
+                "hooks.dll",
+                syntaxTrees: new[] { syntaxTree },
+                references: new[] { 
+                  MetadataReference.CreateFromFile(typeof(object).Assembly.Location), //mscorlib
+                  MetadataReference.CreateFromFile(typeof(IHooksHandler).GetTypeInfo().Assembly.Location) //dredd_hooks_dotnet
+                },
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+              Console.Out.WriteLine(typeof(IHooksHandler).GetTypeInfo().Assembly.Location);
+              IEnumerable<Diagnostic> failures = compilation.GetDiagnostics();
+
+              foreach (Diagnostic diagnostic in failures)
+              {
+                  Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+              }              
               
               using (var stream = new MemoryStream())
               {
-                  var compileResult = compilation.Emit(stream);
+                  var compileResult = compilation.Emit(stream);                  
+                  stream.Flush();
                   assembly = Assembly.Load(stream.GetBuffer());
               }
                               
@@ -58,10 +76,24 @@ namespace dredd_hooks_dotnet
             {
               throw new Exception("Unable to find an assembly with dll and code mode.");            
             }
-              
+            
+              Console.Out.WriteLine("Loaded, invoking");
               assembly.GetExportedTypes()[0] // This isn't a great way...
                       .GetMethod("Configure", BindingFlags.Public | BindingFlags.Static)
-                      .Invoke(null, new object[] { handler });            
+                      .Invoke(null, new object[] { handler });      
+              Console.Out.WriteLine("Loaded, invoked");
+               /*
+               
+               // The template class should be something like:
+               
+               public static class Whatever
+               {
+                 public static void Configure(IHooksHandler handler)
+                 {
+                   
+                 }
+               }
+               */      
           }
 
 #endif                  
